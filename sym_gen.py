@@ -53,6 +53,7 @@ r_stdcall = re.compile("^[@|0-9]+\s*stdcall\s*(-[^ ]+ )*([^(]+)\(([^)]*)\)\s*([^
 #   /* A comment */
 r_comment_multiline = re.compile("/\*.*?\*/",re.DOTALL)
 r_comment_single = re.compile("//.*?\n")
+r_ifdef = re.compile("#.*?\n")
 
 def getDllDir(dllname):
   return os.path.join(WINE_DLLS_PATH, dllname)
@@ -72,6 +73,7 @@ def listDlls():
 def stripComments(s):
   s = re.sub(r_comment_multiline, "", s)
   s = re.sub(r_comment_single, "", s)
+  s = re.sub(r_ifdef, "", s)
   return s
 
 def findDeclaration(haystack, fnname, res):
