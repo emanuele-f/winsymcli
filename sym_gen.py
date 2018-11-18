@@ -108,7 +108,7 @@ def parseModule(libname, res={}, ext_sym_map={}):
   #   CreateProcessAsUserA          (KERNEL32.@)
   #   DeleteService [ADVAPI32.@]
   #		inet_addr		(WS2_32.11)
-  r_docbegin = re.compile("^\s*\**\s*([^(\s[]+)\s*[(|[]" + libname + ".[@|0-9]+[)|\]]\s*$", re.IGNORECASE)
+  r_docbegin = re.compile("^\s*\**\s*([^(\s[]+)\s*[(|[]" + libname + ".[@|0-9]+[)|\]].*$", re.IGNORECASE)
 
   for source in glob.glob(os.path.join(getDllDir(libname), "*.c")):
     with open(source, "r") as f:
