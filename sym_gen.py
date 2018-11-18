@@ -106,7 +106,7 @@ def parseModule(libname, res={}, ext_sym_map={}):
   #   CreateProcessAsUserA          (KERNEL32.@)
   #   DeleteService [ADVAPI32.@]
   #		inet_addr		(WS2_32.11)
-  r_docbegin = re.compile("^\s*\**\s*([^(\s[]+)\s*[(|[]" + libname.upper() + ".[@|0-9]+[)|\]]\s*$")
+  r_docbegin = re.compile("^\s*\**\s*([^(\s[]+)\s*[(|[]" + libname + ".[@|0-9]+[)|\]]\s*$", re.IGNORECASE)
 
   for source in glob.glob(os.path.join(getDllDir(libname), "*.c")):
     with open(source, "r") as f:
@@ -171,7 +171,13 @@ def parseModule(libname, res={}, ext_sym_map={}):
           ext_sym_map[module][sym] = {"name": fnname, "lib": libname}
           continue
 
-        if fnname in res: print("[DUP] %s in %s (already in %s)" % (fnname, libname, res[fnname]["lib"]))
+        if fnname in res:
+          print("[DUP] %s in %s (already in %s)" % (fnname, libname, res[fnname]["lib"]))
+
+          if res[fnname].get("rv"):
+            # signature information is already available, avoid overwriting
+            continue
+
         value = {"lib":libname, "args":args}
 
         fn_decl = doc_strings.get(fnname)

@@ -9,6 +9,9 @@ $ ./winsymcli.py WSAStartup
 int @ws2_32.lib WSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData)
 ```
 
+*Note*: the library name may be inaccurate as the symbol may be defined in multiple
+libraries
+
 ## How it works
 
 It parses the [WineAPI](https://source.winehq.org/WineAPI) library files to extract symbols
