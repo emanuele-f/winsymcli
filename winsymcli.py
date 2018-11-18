@@ -40,8 +40,14 @@ def loadSymbols():
 
   return _symbols
 
-def getSymInfo(sym):
+def getSymInfo(sym, searchAsciiWidechar=True):
   syms = loadSymbols()
+
+  if (not sym in syms) and searchAsciiWidechar:
+    if (sym + "A") in syms:
+      sym = sym + "A"
+    elif (sym + "W") in syms:
+      sym = sym + "W"
 
   if not sym in syms:
     print("[E] Symbol not found")
@@ -54,6 +60,6 @@ def getSymInfo(sym):
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Search for symbols signatures in the database")
   parser.add_argument("sym", help="the exact symbol name to search")
+  parser.add_argument("-n", help="do not search for ascii(*A) and widechar(*W) variants", action='store_true')
   args = parser.parse_args()
-
-  getSymInfo(args.sym)
+  getSymInfo(args.sym, not args.n)
