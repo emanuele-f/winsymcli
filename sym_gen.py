@@ -119,7 +119,7 @@ def parseModule(libname, res={}, ext_sym_map={}):
       for line in f:
         m = r_docbegin.match(line)
 
-        if m:
+        if m and ((not fn_lines) or ("\n".join(fn_lines).find("*/") != -1)):
           search_fn = m.group(1)
           fn_lines = ["/*"] # we are inside a comment
           fn_found = False
